@@ -1,0 +1,102 @@
+//学习本脚本语言: C# : https://dotnet.microsoft.com/en-us/learn/csharp
+//学习本脚本格式: C# Script : https://docs.microsoft.com/en-us/archive/msdn-magazine/2016/january/essential-net-csharp-scripting
+
+// 如何使用? 编写脚本代码 -> 编译脚本 -> 钦定目标编辑器 -> 执行脚本！
+
+using Caliburn.Micro;
+using OngekiFumenEditor.Base;
+using OngekiFumenEditor.Base.OngekiObjects;
+using OngekiFumenEditor.Modules.FumenVisualEditor.Base;
+using OngekiFumenEditor.Modules.FumenVisualEditor.Kernel;
+using OngekiFumenEditor.Utils;
+using System.Linq;
+using System.Collections.Generic;
+using OngekiFumenEditor.Base.OngekiObjects.ConnectableObject;
+using OngekiFumenEditor.Base.OngekiObjects.Lane.Base;
+using OngekiFumenEditor.Base.OngekiObjects.Lane;
+using OngekiFumenEditor.Modules.EditorScriptExecutor.Scripts;
+
+//获取编辑器目标对象
+var targetEditor = ScriptArgs.TargetEditor;
+if (targetEditor is null)
+{
+	Log.LogInfo("没钦定编辑器，跳过");
+	return;
+}
+
+var fumen = targetEditor.Fumen;
+
+var colorId = ColorIdConst.Chinatsu;
+var targetLaneType = LaneType.Colorful;
+//获取当前编辑器选取的start物件进行转换
+var laneStarts = targetEditor.Editor.SelectObjects.OfType<LaneStartBase>().Distinct();
+
+//转换轨道成另一种轨道
+
+LaneStartBase CloneNewLaneWithOtherLaneType(LaneStartBase laneStart, LaneType laneType)
+{
+	LaneStartBase newLaneStart = laneType switch
+	{
+		LaneType.Left => new LaneLeftStart(),
+		LaneType.Right => new LaneRightStart(),
+		LaneType.Center => new LaneCenterStart(),
+		LaneType.Colorful => new ColorfulLaneStart(),
+		_ => default,
+	};
+
+	if (newLaneStart is null)
+		return default;
+
+	newLaneStart.Copy(laneStart);
+
+	foreach (var child in laneStart.Children)
+	{
+		var newChild = child is ConnectableEndObject ? newLaneStart.CreateEndObject() : newLaneStart.CreateNextObject() as ConnectableChildObjectBase;
+		newChild.Copy(child);
+
+		newLaneStart.AddChildObject(newChild);
+	}
+
+	return newLaneStart;
+}
+
+var affactedLaneStartPairs = laneStarts.Select(x => new
+{
+	OldLane = x,
+	NewLane = CloneNewLaneWithOtherLaneType(x, targetLaneType)
+}).Where(x => x.NewLane is not null).ToArray();
+
+if (affactedLaneStartPairs.IsEmpty())
+{
+	Log.LogInfo($"无目标生成");
+	return;
+}
+
+foreach (var colorfulLaneStart in affactedLaneStartPairs.Select(x => x.NewLane).OfType<ColorfulLaneStart>())
+{
+	foreach (var colorfulObj in colorfulLaneStart.Children.OfType<IColorfulLane>().Append(colorfulLaneStart))
+	{
+		colorfulObj.Brightness = 3;
+		colorfulObj.ColorId = colorId;
+	}
+}
+
+targetEditor.UndoRedoManager.ExecuteAction(LambdaUndoAction.Create("批量转换轨道类型", () =>
+{
+	foreach (var pair in affactedLaneStartPairs)
+	{
+		fumen.RemoveObject(pair.OldLane);
+		fumen.AddObject(pair.NewLane);
+	}
+
+	targetEditor.IsDirty = true;
+}, () =>
+{
+	foreach (var pair in affactedLaneStartPairs)
+	{
+		fumen.RemoveObject(pair.NewLane);
+		fumen.AddObject(pair.OldLane);
+	}
+
+	targetEditor.IsDirty = true;
+}));

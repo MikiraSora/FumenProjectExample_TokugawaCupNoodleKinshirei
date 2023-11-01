@@ -1,0 +1,92 @@
+{
+  "Version": "0.5.4",
+  "Id": "10838fa9-2edd-4ef6-b260-c71d2b08588d",
+  "AudioFilePath": "track.wav",
+  "AudioDuration": {
+    "Ticks": 1367655416
+  },
+  "EditorSetting": {
+    "ShowXOffsetScrollBar": true,
+    "XOffset": 15,
+    "JudgeLineOffsetY": 60,
+    "DisableXGridMagneticDock": false,
+    "ForceMagneticDock": true,
+    "ForceTapHoldMagneticDockToLane": false,
+    "JudgeLineAlignBeat": false,
+    "DisableTGridMagneticDock": false,
+    "EnableXOffset": true,
+    "XGridUnitSpace": 6,
+    "TGridUnitLength": 240,
+    "BeatSplit": 6,
+    "XGridDisplayMaxUnit": 40,
+    "ForceXGridMagneticDock": false,
+    "VerticalDisplayScale": 0.8,
+    "MouseWheelLength": 50,
+    "AdjustPastedObjects": true,
+    "DisplayTimeFormat": 0,
+    "IsNotifying": true
+  },
+  "FumenFilePath": "ramen.nyageki",
+  "RememberLastDisplayTime": {
+    "Ticks": 308412921
+  },
+  "StoreBulletPalleteEditorDatas": {
+    "A0": {
+      "Name": "\u5360\u4F4D",
+      "AuxiliaryLineColor": {
+        "ColorContext": null,
+        "A": 255,
+        "R": 189,
+        "G": 183,
+        "B": 107,
+        "ScA": 1,
+        "ScR": 0.50888133,
+        "ScG": 0.4735315,
+        "ScB": 0.14702727
+      }
+    },
+    "A1": {
+      "Name": "A-0",
+      "AuxiliaryLineColor": {
+        "ColorContext": null,
+        "A": 255,
+        "R": 189,
+        "G": 183,
+        "B": 107,
+        "ScA": 1,
+        "ScR": 0.50888133,
+        "ScG": 0.4735315,
+        "ScB": 0.14702727
+      }
+    },
+    "A2": {
+      "Name": "",
+      "AuxiliaryLineColor": {
+        "ColorContext": null,
+        "A": 255,
+        "R": 189,
+        "G": 183,
+        "B": 107,
+        "ScA": 1,
+        "ScR": 0.50888133,
+        "ScG": 0.4735315,
+        "ScB": 0.14702727
+      }
+    },
+    "A3": {
+      "Name": "",
+      "AuxiliaryLineColor": {
+        "ColorContext": null,
+        "A": 255,
+        "R": 189,
+        "G": 183,
+        "B": 107,
+        "ScA": 1,
+        "ScR": 0.50888133,
+        "ScG": 0.4735315,
+        "ScB": 0.14702727
+      }
+    }
+  },
+  "IsNotifying": true
+}
