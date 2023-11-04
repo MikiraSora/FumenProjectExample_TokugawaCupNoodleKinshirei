@@ -9,9 +9,9 @@ using OngekiFumenEditor.Utils;
 using OngekiFumenEditor.Modules.FumenVisualEditor.Base;
 using OngekiFumenEditor.Modules.EditorScriptExecutor.Scripts;
 
-var sourceLaneGroupId = 431;
-var genLaneType = LaneType.Colorful;
-var xGridOffset = new GridOffset(-1, 0);
+var sourceLaneGroupId = 165;
+var genLaneType = LaneType.WallRight;
+var xGridOffset = new GridOffset(0, 0);
 var tGridOffset = new GridOffset(0, 0);
 
 //获取编辑器目标对象
